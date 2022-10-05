@@ -28,11 +28,6 @@ app.MapControllerRoute(
     pattern: "{controller=Pizza}/{action=Index}/{id?}"
 );
 
-app.MapControllerRoute(
-    name: "Create",
-    pattern: "{controller=Pizza}/{action=Create}"
-);
-
 app.Run();
 
 public class PizzeriaContext : DbContext

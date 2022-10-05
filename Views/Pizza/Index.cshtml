@@ -18,7 +18,7 @@
         </thead>
         <tbody>
             @{
-                int count = 0;
+                int count = 1;
             }
             @foreach (Pizza pizza in Model)
             {
@@ -36,7 +36,7 @@
                         <h4>@pizza.Price€</h4>
                     </td>
                     <td>
-                        <a href="@Url.Action("Details", "Pizza", new {Id = count++})" class="btn btn-outline-info">
+                        <a href="@Url.Action("Show", "Pizza", new {Id = count++})" class="btn btn-outline-info">
                             Visualizza
                         </a>
                     </td>

@@ -3,81 +3,52 @@ using Microsoft.AspNetCore.Mvc;
 using la_mia_pizzeria_post.Models;
 using System.Reflection.Metadata.Ecma335;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Data.SqlClient.Server;
 
 namespace la_mia_pizzeria_post.Controllers
 {
     public class PizzaController : Controller
     {
-        public List<Pizza> CreatePizza()
-        {
-            List<Pizza> ListPizza = new List<Pizza> {
-
-                new Pizza("Pizza Margherita", "bona come er pane", "https://media-assets.vanityfair.it/photos/61e444841e21bc3bd54b5357/1:1/w_2832,h_2832,c_limit/pizza%20tendenze.jpg", 3.99),
-                new Pizza("Pizza Capricciosa", "idem co patate", "https://media-assets.vanityfair.it/photos/61e444841e21bc3bd54b5357/1:1/w_2832,h_2832,c_limit/pizza%20tendenze.jpg", 7.99),
-                new Pizza("Pizza Diavola", "er duca", "https://media-assets.vanityfair.it/photos/61e444841e21bc3bd54b5357/1:1/w_2832,h_2832,c_limit/pizza%20tendenze.jpg", 12.99),
-                new Pizza("Pizza Quattro Formaggi", "fiocina", "https://media-assets.vanityfair.it/photos/61e444841e21bc3bd54b5357/1:1/w_2832,h_2832,c_limit/pizza%20tendenze.jpg", 9.99),
-                new Pizza("Pizza Coi Funghi", "er monnezza", "https://media-assets.vanityfair.it/photos/61e444841e21bc3bd54b5357/1:1/w_2832,h_2832,c_limit/pizza%20tendenze.jpg", 11.99),
-                new Pizza("Pizza Salsiccia e Salame", "tonino u lurdu", "https://media-assets.vanityfair.it/photos/61e444841e21bc3bd54b5357/1:1/w_2832,h_2832,c_limit/pizza%20tendenze.jpg", 5.99),
-            };
-
-            return ListPizza;
-        }
-
         // GET: PizzaController
         public ActionResult Index()
         {
-            List<Pizza> ListPizza = CreatePizza();
+            PizzeriaContext db = new PizzeriaContext();
 
-            return View(ListPizza);
+            return View(db.Pizza.ToList());
         }
 
-        // GET: PizzaController/Details/5
-        public ActionResult Details(int id)
+        // GET: PizzaController/Show/5
+        public ActionResult Show(int id)
         {
-            List<Pizza> ListPizza = CreatePizza();
+            PizzeriaContext db = new PizzeriaContext();
 
-            return View(ListPizza[id]);
+            return View(db.Pizza.Find(id));
         }
 
         // GET: PizzaController/Create
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        // POST: PizzaController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(Pizza formData)
         {
             using (PizzeriaContext context = new PizzeriaContext())
             {
-                Pizza postToCreate = new Pizza();
-                postToCreate.Name = formData.Name;
-                postToCreate.Description = formData.Description;
-                postToCreate.Image = formData.Image;
-                postToCreate.Price = formData.Price;
+                Pizza pizzaCreate = new Pizza();
+                pizzaCreate.Name = formData.Name;
+                pizzaCreate.Description = formData.Description;
+                pizzaCreate.Image = formData.Image;
+                pizzaCreate.Price = formData.Price;
 
-                context.Pizza.Add(postToCreate);
+                context.Pizza.Add(pizzaCreate);
 
                 context.SaveChanges();
 
                 return RedirectToAction("Index");
-            }
-
-            return View("Create");
-
-            //Utility.Add(new Pizza(formData.Name, formData.Description, formData.Image, formData.Price));
-
-            //return RedirectToAction("Index");
-        }
-
-        // POST: PizzaController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
             }
         }
 
