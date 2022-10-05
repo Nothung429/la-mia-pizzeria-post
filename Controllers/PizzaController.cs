@@ -36,6 +36,11 @@ namespace la_mia_pizzeria_post.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(Pizza formData)
         {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+
             using (PizzeriaContext context = new PizzeriaContext())
             {
                 Pizza pizzaCreate = new Pizza();
