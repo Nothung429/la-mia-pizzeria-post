@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using la_mia_pizzeria_post.Models;
 using System.Reflection.Metadata.Ecma335;
+using Microsoft.IdentityModel.Tokens;
 
 namespace la_mia_pizzeria_post.Controllers
 {
@@ -16,7 +17,7 @@ namespace la_mia_pizzeria_post.Controllers
                 new Pizza("Pizza Diavola", "er duca", "https://media-assets.vanityfair.it/photos/61e444841e21bc3bd54b5357/1:1/w_2832,h_2832,c_limit/pizza%20tendenze.jpg", 12.99),
                 new Pizza("Pizza Quattro Formaggi", "fiocina", "https://media-assets.vanityfair.it/photos/61e444841e21bc3bd54b5357/1:1/w_2832,h_2832,c_limit/pizza%20tendenze.jpg", 9.99),
                 new Pizza("Pizza Coi Funghi", "er monnezza", "https://media-assets.vanityfair.it/photos/61e444841e21bc3bd54b5357/1:1/w_2832,h_2832,c_limit/pizza%20tendenze.jpg", 11.99),
-                new Pizza("Pizza Salsiccia e Salame", "tonino u lurdu", "https://media-assets.vanityfair.it/photos/61e444841e21bc3bd54b5357/1:1/w_2832,h_2832,c_limit/pizza%20tendenze.jpg", 5.99),               
+                new Pizza("Pizza Salsiccia e Salame", "tonino u lurdu", "https://media-assets.vanityfair.it/photos/61e444841e21bc3bd54b5357/1:1/w_2832,h_2832,c_limit/pizza%20tendenze.jpg", 5.99),
             };
 
             return ListPizza;
@@ -39,9 +40,30 @@ namespace la_mia_pizzeria_post.Controllers
         }
 
         // GET: PizzaController/Create
-        public ActionResult Create()
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(Pizza formData)
         {
-            return View();
+            using (PizzeriaContext context = new PizzeriaContext())
+            {
+                Pizza postToCreate = new Pizza();
+                postToCreate.Name = formData.Name;
+                postToCreate.Description = formData.Description;
+                postToCreate.Image = formData.Image;
+                postToCreate.Price = formData.Price;
+
+                context.Pizza.Add(postToCreate);
+
+                context.SaveChanges();
+
+                return RedirectToAction("Index");
+            }
+
+            return View("Create");
+
+            //Utility.Add(new Pizza(formData.Name, formData.Description, formData.Image, formData.Price));
+
+            //return RedirectToAction("Index");
         }
 
         // POST: PizzaController/Create

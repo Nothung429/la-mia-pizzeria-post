@@ -7,6 +7,10 @@
         public string Description { get; set; }
         public string Image { get; set; }
         public double Price { get; set; }
+        public Pizza()
+        {
+
+        }
         public Pizza(string name, string description, string image, double price)
         {
             Name = name;

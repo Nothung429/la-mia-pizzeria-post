@@ -1,0 +1,48 @@
+﻿@{
+    Layout = "_Layout";
+
+    @model Pizza
+}
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h1>Aggiungi Pizza</h1>
+        </div>
+        <div class="card-body">
+            <form asp-controller="Pizza" asp-action="Create" method="post">                
+                @Html.AntiForgeryToken()
+
+                <div class="form-group mb-3">
+                    <label for="Name">Nome Pizza *</label>
+                    <input asp-for="Name" type="text" class="form-control">
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="Price">Prezzo Pizza *</label>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">€</span>
+                        <input asp-for="Price" type="text" class="form-control">
+                        <span class="input-group-text">.00</span>
+                    </div>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="Description">Descrizione Pizza *</label>
+                    <textarea asp-for="Description" class="form-control" rows="10"></textarea>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="Image" class="form-label">Immagine Pizza</label>
+                    <input asp-for="Image" type="file" class="form-control">
+                </div>
+
+                <div>
+                    <p>* Questi campi sono obbligatori</p>
+                </div>
+
+                <button type="submit" class="btn btn-outline-success">Aggiungi</button>
+            </form>
+        </div>
+    </div>
+</div>
