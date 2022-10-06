@@ -18,11 +18,11 @@ namespace la_mia_pizzeria_post.Controllers
         }
 
         // GET: PizzaController/Show/5
-        public ActionResult Show(int id)
+        public ActionResult Show(int Id)
         {
             PizzeriaContext db = new PizzeriaContext();
 
-            return View(db.Pizza.Find(id));
+            return View(db.Pizza.Find(Id));
         }
 
         // GET: PizzaController/Create
